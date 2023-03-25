@@ -16,13 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from spotato_app.views import *
-from rest_framework import routers
-
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet )
-router.register(r'client', ClientViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls))
+    path('user/', include('spotato_app.urls'))
 ]
