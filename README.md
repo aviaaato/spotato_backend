@@ -5,21 +5,21 @@
 - [x] `POST /api/client` : client inscription
 ```json
 {
-    "first_name"  : "string",
-    "last_name"   : "string",
-    "email"       : "string",
-    "username"    : "string",
-    "password"    : "string",
+    "first_name"  : "first_name",
+    "last_name"   : "last_name",
+    "email"       : "email",
+    "username"    : "username",
+    "password"    : "password",
 }
 ```
 - [x] `POST /api/spotter` : spotter inscription
 ```json
 {
-    "first_name"  : "string",
-    "last_name"   : "string",
-    "email"       : "string",
-    "username"    : "string",
-    "password"    : "string",
+    "first_name"  : "first_name",
+    "last_name"   : "last_name",
+    "email"       : "email",
+    "username"    : "username",
+    "password"    : "password",
 }
 
 ```
