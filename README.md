@@ -71,19 +71,19 @@
 - [x] `GET /api/requests/{request_id}` : obtenir détails d'une requete
     - Need _Spotter_ token
 
-- [x] `PATCH /api/requests/{request_id}/start` : modifier requete (annuler, commencer, finir)
+- [x] `PATCH /api/requests/{request_id}` : modifier requete (annuler, commencer, finir)
     - Need _Spotter_ token
 ```json
 {
-    "status": ""
+    "status": "start"
 }
 ```
 
-- [x] `PATCH /api/requests/{request_id}/start-chrono` : modifier requete (annuler, commencer, finir)
+- [x] `PATCH /api/requests/{request_id}` : modifier requete (annuler, commencer, finir)
     - Need _Spotter_ token
 ```json
 {
-    "status": "",
+    "status": "start-chrono",
     "start_time": ""
 }
 ```
