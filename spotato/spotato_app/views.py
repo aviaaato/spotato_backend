@@ -9,7 +9,7 @@ from spotato_app.serializer import SerializerClientRegister, SerializerSpotterRe
     SerializerCategorie
 
 
-class CategorieDetaille(viewsets.ModelViewSet):
+class CategorieDetailleView(viewsets.ModelViewSet):
     queryset = Categorie.objects.all()
     serializer_class = SerializerCategorie
 
