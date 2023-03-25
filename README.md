@@ -58,9 +58,7 @@
     "longitude" : "longitude",
     "duration" : "duration",
     "requested_start_time" : "requested_start_time",
-    "montant" : "montant",
-    "stop_time" : "stop_time"
-
+    "montant" : "montant"
 }
 
 ```
