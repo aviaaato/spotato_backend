@@ -19,5 +19,5 @@ from spotato_app.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('spotato_app.urls'))
+    path('', include('spotato_app.urls'))
 ]

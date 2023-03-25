@@ -2,12 +2,40 @@
 
 ## Endpoints
 
-- [x] `POST /api/users` : inscription
-- [x] `POST /api/login` : connexion
+- [x] `POST /api/client` : client inscription
+```json
+{
+        "username": "username",
+        "password": "password",
+        "phone": "0123456789",
+}
+```
+- [x] `POST /api/spotter` : spotter inscription
+```json
+{
+        "username": "username",
+        "password": "password",
+        "phone": "0123456789",
+}
+```
+- [x] `POST /api/client/login` : client connexion
+```json
+{
+        "username": "username",
+        "password": "password",
+}
+```
+- [x] `POST /api/spotter/login` : spotter connexion
+```json
+{
+        "username": "username",
+        "password": "password",
+}
+```
 
-- [ ] `GET /api/users/{user_id}` : obtenir détails d'un utilisateur
+- [x] `GET /api/client/` : obtenir détails d'un utilisateur , **need token**
  
-- [ ] `GET /api/users/{user_id}/requests` : obtenir toutes les requetes demandées par un utilisateur
+- [x] `GET /api/client/requests` : obtenir toutes les requetes demandées par un utilisateur **need token**
 
 
 - [ ] `POST /api/requests` : faire une nouvelle requete
