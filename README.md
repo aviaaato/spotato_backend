@@ -41,14 +41,14 @@
 ```
 
 - [x] `GET /api/client/` : obtenir détails d'un utilisateur
-    - <b>Need user  token</b>
+    - Need _User_ token
 
 - [x] `GET /api/client/requests` : obtenir toutes les requetes demandées par un utilisateur
-    - <b>Need user  token</b>
+    - Need _User_ token
 
 
 - [x] `POST /api/requests` : faire une nouvelle requete 
-    - <b>Need user  token</b>
+    - <b>Need _User_ token</b>
 ```json
 {
     "label" : "label",
@@ -59,19 +59,34 @@
     "duration" : "duration",
     "requested_start_time" : "requested_start_time",
     "montant" : "montant",
-    "start_time" : "start_time",
     "stop_time" : "stop_time"
 
 }
 
 ```
 - [x] `GET /api/requests`: obtenir toutes les requetes
-    - <b>Need spotter token</b>
+    - Need _Spotter_ token
 
 
-- [ ] `GET /api/requests/{request_id}` : obtenir détails d'une requete
+- [x] `GET /api/requests/{request_id}` : obtenir détails d'une requete
+    - Need _Spotter_ token
 
-- [ ] `PATCH /api/requests/{request_id}/start` : modifier requete (annuler, commencer, finir)
+- [x] `PATCH /api/requests/{request_id}/start` : modifier requete (annuler, commencer, finir)
+    - Need _Spotter_ token
+```json
+{
+    "status": ""
+}
+```
+
+- [x] `PATCH /api/requests/{request_id}/start-chrono` : modifier requete (annuler, commencer, finir)
+    - Need _Spotter_ token
+```json
+{
+    "status": "",
+    "start_time": ""
+}
+```
 
 - [ ] `PATCH /api/requests/{request_id}/cancel` : modifier requete (annuler, commencer, finir)
 
