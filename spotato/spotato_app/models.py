@@ -21,7 +21,7 @@ class Categorie(models.Model):
 
 class Requete(models.Model):
     client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
-    spotter = models.ForeignKey(Spotter, on_delete=models.CASCADE)
+    spotter = models.ForeignKey(Spotter, on_delete=models.CASCADE, null=True)
     label = models.CharField(max_length=100)
     description = models.TextField()
     categorie = models.ForeignKey(Categorie, on_delete=models.DO_NOTHING)

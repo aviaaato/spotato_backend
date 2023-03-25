@@ -19,7 +19,7 @@ class SerializerClientRegister(serializers.Serializer):
             username=validated_data["username"],
             password=validated_data["password"],
         )
-        return Client.objects.create(user, phone=validated_data['phone'])
+        return Client.objects.create(user=user, phone=validated_data['phone'])
 
 
 class SerializerSpotterRegister(SerializerClientRegister):
@@ -31,8 +31,17 @@ class SerializerSpotterRegister(SerializerClientRegister):
             username=validated_data["username"],
             password=validated_data["password"],
         )
-        return Spotter.objects.create(user, phone=validated_data['phone'])
+        return Spotter.objects.create(user=user, phone=validated_data['phone'])
 
 
-class RequeteSerializer(serializers.Serializer):
-    pass
+class SerializerInputRequete(serializers.Serializer):
+    label = serializers.CharField(max_length=100)
+    description = serializers.CharField(max_length=255)
+    categorie = serializers.IntegerField()
+    latitude = serializers.CharField(max_length=100)
+    longitude = serializers.CharField(max_length=100)
+    duration = serializers.FloatField()
+    requested_start_time = serializers.DateTimeField()
+    montant = serializers.FloatField()
+    start_time = serializers.TimeField()
+    stop_time = serializers.TimeField()

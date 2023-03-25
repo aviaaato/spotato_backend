@@ -74,3 +74,34 @@ class GetClientRequeteView(APIView):
             return Response(data, status=status.HTTP_200_OK)
 
         return Response("user is not yet authenticate", status=status.HTTP_400_BAD_REQUEST)
+
+
+class CreateRequeteView(APIView):
+    def post(self, request):
+        inputRequete = SerializerInputRequete(data=request)
+
+        if request.user.is_authenticated() and inputRequete.is_valid():
+            user = User.objects.ge(pk=request.user.id)
+            client = Client.objects.filter(user=user)
+
+            categorie = Categorie.objects.get(pk=inputRequete.categorie)
+
+            requete = Requete(
+                client=client,
+                description=inputRequete.description,
+                lable=inputRequete.label,
+                categorie=categorie,
+                latitude=inputRequete.latitude,
+                longitude=inputRequete.longitude,
+                duration=inputRequete.duration,
+                requested_start_time=inputRequete.requested_start_time,
+                montant=inputRequete.montant,
+                start_time=inputRequete.start_time,
+                stop_time=inputRequete.stop_time
+            )
+
+            requete.save()
+
+            return Response("requete is create", status.HTTP_200_OK)
+
+        return Response("user is not yet authenticate", status=status.HTTP_400_BAD_REQUEST)
