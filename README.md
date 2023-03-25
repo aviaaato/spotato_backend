@@ -45,7 +45,23 @@
 - [x] `GET /api/client/requests` : obtenir toutes les requetes demandées par un utilisateur **need token**
 
 
-- [ ] `POST /api/requests` : faire une nouvelle requete
+- [x] `POST /api/requests` : faire une nouvelle requete
+```json
+{
+    "label" : "label",
+    "description" : "description",
+    "categorie" : 1,
+    "latitude" : "latitude",
+    "longitude" : "longitude",
+    "duration" : "duration",
+    "requested_start_time" : "requested_start_time",
+    "montant" : "montant",
+    "start_time" : "start_time",
+    "stop_time" : "stop_time"
+
+}
+
+```
 - [ ] `GET /api/requests`: obtenir toutes les requetes
 
 - [ ] `GET /api/requests/{request_id}` : obtenir détails d'une requete
