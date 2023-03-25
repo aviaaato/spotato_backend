@@ -1,11 +1,17 @@
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.authtoken.admin import User
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from spotato_app.models import Spotter, Client, Requete, Categorie
-from spotato_app.serializer import SerializerClientRegister, SerializerSpotterRegister, SerializerInputRequete
+from spotato_app.serializer import SerializerClientRegister, SerializerSpotterRegister, SerializerInputRequete, \
+    SerializerCategorie
+
+
+class CategorieDetaille(viewsets.ModelViewSet):
+    queryset = Categorie.objects.all()
+    serializer_class = SerializerCategorie
 
 
 class ClientRegisterView(APIView):

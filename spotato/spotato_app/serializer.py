@@ -43,3 +43,9 @@ class SerializerInputRequete(serializers.Serializer):
     duration = serializers.FloatField()
     requested_start_time = serializers.DateTimeField()
     montant = serializers.FloatField()
+
+
+class SerializerCategorie(serializers.ModelSerializer):
+    class Meta:
+        model = Categorie
+        fields = ["icon", "label", "id"]
