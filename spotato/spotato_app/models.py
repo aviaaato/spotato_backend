@@ -1,26 +1,23 @@
-from django.db import models
-from django.contrib.auth.models import User
 from datetime import datetime
 
-# Create your models here.
-    
+from django.contrib.auth.models import User
+from django.db import models
 
 
 class Client(models.Model):
-    id = models.IntegerField(primary_key=True)
-    phone = models.CharField(max_length=100)
+    phone = models.CharField(max_length=10)
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
 
 
 class Spotter(models.Model):
-    id = models.IntegerField(primary_key=True)
-    phone = models.CharField(max_length=100)
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING )
+    phone = models.CharField(max_length=10)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+
 
 class Categorie(models.Model):
-    id = models.IntegerField(primary_key=True)
     label = models.CharField(max_length=100)
     icon = models.ImageField()
+
 
 class Requete(models.Model):
     client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
@@ -43,4 +40,3 @@ class Transaction(models.Model):
     source = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='user_transaction_source')
     destination = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='user_transaction_destination')
     date_time = models.DateTimeField(default=datetime.now())
-
