@@ -5,18 +5,23 @@
 - [x] `POST /api/client` : client inscription
 ```json
 {
-        "username": "username",
-        "password": "password",
-        "phone": "0123456789",
+    "first_name"  : "string",
+    "last_name"   : "string",
+    "email"       : "string",
+    "username"    : "string",
+    "password"    : "string",
 }
 ```
 - [x] `POST /api/spotter` : spotter inscription
 ```json
 {
-        "username": "username",
-        "password": "password",
-        "phone": "0123456789",
+    "first_name"  : "string",
+    "last_name"   : "string",
+    "email"       : "string",
+    "username"    : "string",
+    "password"    : "string",
 }
+
 ```
 - [x] `POST /api/client/login` : client connexion
 ```json
