@@ -98,3 +98,6 @@
 - [ ] `GET /api/users/account` : obtenir les détails du compte airtelmoney d'un utilisateur (en rapport avec l'application)
 
 - [ ] `POST /api/transaction_callback` : callback de transaction
+
+- [x] `GET /api/categorie` : get all categorie
+
