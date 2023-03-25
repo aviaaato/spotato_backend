@@ -28,9 +28,9 @@ class Requete(models.Model):
     latitude = models.CharField(max_length=100)
     longitude = models.CharField(max_length=100)
     duration = models.FloatField()
-    requested_start_time = models.DateTimeField()
+    requested_start_time = models.DateTimeField() # user fix this
     montant = models.FloatField()
-
+    status = models.IntegerField(max_length=1, default=0)
     start_time = models.TimeField()
     stop_time = models.TimeField()
 

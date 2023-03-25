@@ -25,7 +25,7 @@
 }
 
 ```
-- [x] `POST /api/client/login` : client connexion
+- [x] `POST /api/client/login` : client connexion 
 ```json
 {
         "username": "username",
@@ -40,12 +40,15 @@
 }
 ```
 
-- [x] `GET /api/client/` : obtenir détails d'un utilisateur , **need token**
- 
-- [x] `GET /api/client/requests` : obtenir toutes les requetes demandées par un utilisateur **need token**
+- [x] `GET /api/client/` : obtenir détails d'un utilisateur
+    - <b>Need user  token</b>
+
+- [x] `GET /api/client/requests` : obtenir toutes les requetes demandées par un utilisateur
+    - <b>Need user  token</b>
 
 
-- [x] `POST /api/requests` : faire une nouvelle requete
+- [x] `POST /api/requests` : faire une nouvelle requete 
+    - <b>Need user  token</b>
 ```json
 {
     "label" : "label",
@@ -62,7 +65,9 @@
 }
 
 ```
-- [ ] `GET /api/requests`: obtenir toutes les requetes
+- [x] `GET /api/requests`: obtenir toutes les requetes
+    - <b>Need spotter token</b>
+
 
 - [ ] `GET /api/requests/{request_id}` : obtenir détails d'une requete
 
