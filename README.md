@@ -2,8 +2,8 @@
 
 ## Endpoints
 
-- [ ] `POST /api/users` : inscription
-- [ ] `POST /api/login` : connexion
+- [x] `POST /api/users` : inscription
+- [x] `POST /api/login` : connexion
 
 - [ ] `GET /api/users/{user_id}` : obtenir détails d'un utilisateur
  
