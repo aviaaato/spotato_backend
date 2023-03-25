@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.authtoken.admin import User
 from rest_framework.response import Response
@@ -84,8 +85,6 @@ class CreateRequeteView(APIView):
                     duration=inputRequete.duration,
                     requested_start_time=inputRequete.requested_start_time,
                     montant=inputRequete.montant,
-                    start_time=inputRequete.start_time,
-                    stop_time=inputRequete.stop_time
                 )
                 requete.save()
                 return Response("requete is create", status.HTTP_200_OK)
@@ -94,7 +93,6 @@ class CreateRequeteView(APIView):
         return Response("user is not yet authenticate", status=status.HTTP_400_BAD_REQUEST)
 
 
-# /api/requests
 class SpotterGetAllRequete(APIView):
     def get(self, request):
         if request.user.is_authenticated():
@@ -106,3 +104,35 @@ class SpotterGetAllRequete(APIView):
             except Exception as e:
                 return Response(e, status.HTTP_400_BAD_REQUEST)
         return Response("user is not yet authenticate", status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+def spotter_get_detaille_requete(request, pk):
+    if request.user.is_authenticated():
+        if request.method == "GET":
+            try:
+                user = User.objects.get(pk=request.user.id)
+                _ = Spotter.objects.get(user=user)
+                requete = Requete.objects.get(pk)
+                return Response(requete, status.HTTP_200_OK)
+            except Exception as e:
+                return Response(e, status.HTTP_400_BAD_REQUEST)
+        elif request.method == "PATCH":
+            try:
+                user = User.objects.get(pk=request.user.id)
+                _ = Spotter.objects.get(user=user)  # just catch if spotter is now existe
+                requete = Requete.objects.get(pk)
+                requete_status = request.data.get("status", None)
+                if requete_status == "start":
+                    requete.status = 1
+                elif requete_status == "start-chrono":
+                    start_time = request.data.get("start_time", None)
+                    requete.status = 2
+                    requete.start_time = start_time
+                else:
+                    pass
+                requete.save()
+                return Response(requete, status.HTTP_200_OK)
+            except Exception as e:
+                return Response(e, status=status.HTTP_400_BAD_REQUEST)
+    return Response("user is not yet authenticate", status=status.HTTP_400_BAD_REQUEST)

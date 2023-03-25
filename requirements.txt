@@ -5,3 +5,4 @@ sqlparse==0.4.3
 tzdata==2023.2
 django-cors-headers
 djangorestframework
+requests

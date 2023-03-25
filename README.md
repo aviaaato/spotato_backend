@@ -93,8 +93,8 @@
 
 - [ ] `POST /api/transactions` : effectuer transaction
 
-- [ ] `GET /api/users/{user_id}/transactions` : obtenir toutes les transactions d'un utilisateur
+- [ ] `GET /api/users/transactions` : obtenir toutes les transactions d'un utilisateur
 
-- [ ] `GET /api/users/{user_id}/account` : obtenir les détails du compte airtelmoney d'un utilisateur (en rapport avec l'application)
+- [ ] `GET /api/users/account` : obtenir les détails du compte airtelmoney d'un utilisateur (en rapport avec l'application)
 
 - [ ] `POST /api/transaction_callback` : callback de transaction

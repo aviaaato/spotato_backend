@@ -43,5 +43,3 @@ class SerializerInputRequete(serializers.Serializer):
     duration = serializers.FloatField()
     requested_start_time = serializers.DateTimeField()
     montant = serializers.FloatField()
-    start_time = serializers.TimeField()
-    stop_time = serializers.TimeField()
