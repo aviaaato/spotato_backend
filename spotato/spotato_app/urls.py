@@ -2,10 +2,12 @@ from django.urls import path
 from rest_framework.authtoken import views
 
 from spotato_app.views import ClientRegisterView, GetClientDetailView, GetClientRequeteView, CreateRequeteView, \
-    SpotterGetAllRequete, spotter_get_detaille_requete, CategorieDetailleView
+    SpotterGetAllRequete, spotter_get_detaille_requete, CategorieDetailleView, DoTransactionView
 
 urlpatterns = [
     path("api/client", ClientRegisterView.as_view()),
+    # path("api/categorie", CategorieDetailleView.as_view({"get": "list"})),
+    path("api/categorie", CategorieDetailleView.as_view()),
     path("api/spotter", ClientRegisterView.as_view()),
     path("api/client/login", views.obtain_auth_token),
     path("api/spotter/login", views.obtain_auth_token),
@@ -14,5 +16,5 @@ urlpatterns = [
     path("api/requests", CreateRequeteView.as_view()),
     path("api/requests", SpotterGetAllRequete.as_view()),
     path("api/requests/<int:pk>", spotter_get_detaille_requete),
-    path("api/categorie", CategorieDetailleView.as_view({"get": "list"})),
+    path("api/transaction", DoTransactionView.as_view())
 ]

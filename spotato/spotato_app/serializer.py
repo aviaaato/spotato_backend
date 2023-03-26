@@ -40,7 +40,7 @@ class SerializerInputRequete(serializers.Serializer):
     categorie = serializers.IntegerField()
     latitude = serializers.CharField(max_length=100)
     longitude = serializers.CharField(max_length=100)
-    duration = serializers.FloatField()
+    duration = serializers.CharField()
     requested_start_time = serializers.DateTimeField()
     montant = serializers.FloatField()
 
@@ -49,3 +49,28 @@ class SerializerCategorie(serializers.ModelSerializer):
     class Meta:
         model = Categorie
         fields = ["icon", "label", "id"]
+
+
+class SerializerTransaction(serializers.Serializer):
+    montant = serializers.FloatField()
+    source = serializers.IntegerField()
+    destination = serializers.IntegerField()
+
+
+# class SerializerTransaction(serializers.Serializer):
+#     montant = serializers.FloatField()
+#     source = serializers.IntegerField()
+#     destination = serializers.IntegerField()
+#
+#     def create(self, validated_data):
+#         transaction = Transaction(
+#             montant=validated_data["montant"],
+#             source=validated_data["source"],
+#             destination=validated_data["destination"],
+#         )
+#         return transaction.save()
+
+class SerializerRequest(serializers.ModelSerializer):
+    class Meta:
+        model = Requete
+        fields = '__all__'

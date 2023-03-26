@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -38,4 +40,4 @@ class Transaction(models.Model):
     montant = models.FloatField()
     source = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='user_transaction_source')
     destination = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='user_transaction_destination')
-    date_time = models.DateTimeField(default=timezone.now())
+    date_time = models.DateTimeField(default=datetime.now())
