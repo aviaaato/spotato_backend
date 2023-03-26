@@ -39,5 +39,6 @@ class Requete(models.Model):
 class Transaction(models.Model):
     montant = models.FloatField()
     source = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='user_transaction_source')
-    destination = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='user_transaction_destination')
-    date_time = models.DateTimeField(default=datetime.now())
+    requete = models.ForeignKey(Requete, on_delete=models.DO_NOTHING, related_name="transaction_requete")
+    date_time = models.DateTimeField(default=timezone.now())
+
