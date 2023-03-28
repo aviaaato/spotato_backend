@@ -86,18 +86,10 @@
 }
 ```
 
-- [ ] `PATCH /api/requests/{request_id}/cancel` : modifier requete (annuler, commencer, finir)
-
-- [ ] `PATCH /api/requests/{request_id}/stop` : modifier requete (annuler, commencer, finir)
-
-
-- [ ] `POST /api/transactions` : effectuer transaction
-
-- [ ] `GET /api/users/transactions` : obtenir toutes les transactions d'un utilisateur
-
-- [ ] `GET /api/users/account` : obtenir les détails du compte airtelmoney d'un utilisateur (en rapport avec l'application)
-
-- [ ] `POST /api/transaction_callback` : callback de transaction
-
 - [x] `GET /api/categorie` : get all categorie
+
+- [x] `GET /api/transaction` : ask transaction
+
+- [ ] `POST /api/valide_transaction` : effectuer transaction
+
 

@@ -1,3 +1,5 @@
+import time
+
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.authtoken.admin import User
@@ -5,9 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from spotato_app.airtel_api import AirtelApi
-from spotato_app.models import Spotter, Client, Requete, Categorie, Transaction
-from spotato_app.serializer import SerializerClientRegister, SerializerSpotterRegister, SerializerTransaction, \
-    SerializerRequest
+from spotato_app.models import Spotter, Client, Requete, Categorie
+from spotato_app.serializer import SerializerClientRegister, SerializerSpotterRegister, SerializerRequest
 
 
 #
@@ -73,6 +74,41 @@ class GetClientDetailView(APIView):
             return Response(e, status=status.HTTP_403_FORBIDDEN)
 
 
+class GetSoldeSpotter(APIView):
+    def get(self, request):
+        money = 0
+        try:
+            pk = request.user.id
+            user = User.objects.get(pk)
+            spotter = Spotter.objects.get(user=user)
+
+            requete = Requete.objects.filter(spotter=spotter)
+
+            for req in requete:
+                money += req.montant
+
+            return Response(f"{money} Ar", status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(f"Exception {e}", status=status.HTTP_403_FORBIDDEN)
+
+
+class GetSpotterDetaille(APIView):
+    def get(self, request):
+        try:
+            pk = request.user.id
+            user = User.objects.get(pk=pk)
+
+            client = Client.objects.filter(user=user)
+            data = {
+                "username": user.username,
+                "phone": client.phone,
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(f"Exception {e}", status=status.HTTP_403_FORBIDDEN)
+
+
 class GetClientRequeteView(APIView):
     def get(self, request):
         pk = request.user.id
@@ -93,6 +129,23 @@ class CreateRequeteView(APIView):
             user = User.objects.get(pk=request.user.id)
             client = Client.objects.get(user=user)
             categorie = Categorie.objects.get(pk=inputRequete.get("categorie"))
+
+            airtel = AirtelApi()
+
+            r_payement = airtel.payments(client.phone, inputRequete.get("montant"))
+            print("payment = ", r_payement)
+
+            transaction_id = r_payement["data"]["transaction"]["id"]
+
+            status_code = airtel.transaction_enquiry(transaction_id)["data"]["transaction"]["status"]
+
+            tmp = 15
+            print("time wait = ", 15, " seconde")
+            time.sleep(tmp)
+
+            if status_code == "TS":
+                return Response("Transaction is not Succes", status.HTTP_200_OK)
+
             requete = Requete(
                 client=client,
                 description=inputRequete.get("description"),
@@ -112,16 +165,17 @@ class CreateRequeteView(APIView):
 
 
 class SpotterGetAllRequete(APIView):
-
     def get(self, request):
         try:
-            pk = request.user.id
-            user = User.objects.get(pk=pk)
+            # pk = request.user.id
+            # user = User.objects.get(pk=pk)
+            # _ = Spotter.objects.get(user=user)
             list_requete = Requete.objects.filter(status=0)
-            return Response(list_requete, status=status.HTTP_200_OK)
+            serializer = SerializerRequest(list_requete, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             print("Get All Error ", e)
-            return Response("error", status.HTTP_400_BAD_REQUEST)
+            return Response("get all error", status.HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -138,10 +192,13 @@ def spotter_get_detaille_requete(request, pk):
         elif request.method == "PATCH":
             try:
                 user = User.objects.get(pk=request.user.id)
+                spotter = Spotter.objects.get(user=user)
                 requete = Requete.objects.get(pk)
                 requete_status = request.data.get("status", None)
                 if requete_status == "start":
                     requete.status = 1
+                    requete.spotter = spotter.id
+
                 elif requete_status == "start-chrono":
                     start_time = request.data.get("start_time", None)
                     requete.status = 2
@@ -154,35 +211,3 @@ def spotter_get_detaille_requete(request, pk):
                 print(e)
                 return Response("error", status=status.HTTP_400_BAD_REQUEST)
     return Response("user is not yet authenticate", status=status.HTTP_400_BAD_REQUEST)
-
-
-class DoTransactionView(APIView):
-    def post(self, request):
-        transaction_serializer = SerializerTransaction(data=request.data)
-        if transaction_serializer.is_valid():
-            try:
-                user = User.objects.get(pk=request.user.id)
-                client = Spotter.objects.get(user=user)  # just catch if spotter is now existe
-
-                requete = Requete.objects.get(client=client, spotter=transaction_serializer["destination"])
-                spotter = requete.spotter()
-
-                transaction = Transaction.objects.create(montant=transaction_serializer["montant"], source=client,
-                                                         destination=spotter)
-                airtel = AirtelApi()
-                result_transaction = airtel.payments(client.phone)
-                data = {
-                    "transaction": transaction,
-                    "transaction_response_from_api": result_transaction
-                }
-                return Response(data, status.HTTP_200_OK)
-            except Exception as e:
-                print("exception = ", e)
-                return Response("error", status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(transaction_serializer.errors, status=status.HTTP_403_FORBIDDEN)
-
-
-class CallBack(APIView):
-    def get(self):
-        pass

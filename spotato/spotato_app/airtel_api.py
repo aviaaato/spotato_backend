@@ -1,5 +1,4 @@
 import uuid
-from pprint import pprint as print
 
 import requests
 
@@ -35,8 +34,13 @@ class AirtelApi:
         :return:
         """
 
-        headers = {"Content-Type": "application/json", "Accept": "*/*", "X-Country": "MG", "X-Currency": "MGA",
-                   "Authorization": f'Bearer {self.__access_token}', }
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "*/*",
+            "X-Country": "MG",
+            "X-Currency": "MGA",
+            "Authorization": f'Bearer {self.__access_token}',
+        }
 
         request = f'https://openapiuat.airtel.africa/standard/v1/users/{phone_number}'
 
@@ -44,7 +48,7 @@ class AirtelApi:
 
         return response.json()
 
-    def payments(self, phone_number: str) -> dict:
+    def payments(self, phone_number: str, valuer: int) -> dict:
         """Ask payment validation from some client by phone number"""
         transaction_id = str(uuid.uuid4())
 
@@ -64,7 +68,7 @@ class AirtelApi:
                 "msisdn": phone_number
             },
             "transaction": {
-                "amount": 300,
+                "amount": valuer,
                 "country": "MG",
                 "currency": "MGA",
                 "id": transaction_id
@@ -109,3 +113,14 @@ class AirtelApi:
         response = requests.post(domaine_name, headers=headers)
 
         return response.json()
+
+
+if __name__ == "__main__":
+    client = AirtelApi()
+
+    r_payement = client.payments(TECH_ZARA, 1000)
+    transaction_id = r_payement["data"]["transaction"]["id"]
+
+    print(r_payement)
+
+    print(client.transaction_enquiry(transaction_id))
