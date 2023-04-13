@@ -1,19 +1,18 @@
 from django.urls import path
 from rest_framework.authtoken import views
 
-from spotato_app.views import ClientRegisterView, GetClientDetailView, GetClientRequeteView, CreateRequeteView, \
-    SpotterGetAllRequete, spotter_get_detaille_requete, CategorieDetailleView, GetSoldeSpotter
+from spotato_app.views.client_view import ManageClient
+from spotato_app.views.requete_view import GetClientRequete, get_requete_detail, ManageRequete, \
+    GetAllCategorie
+from spotato_app.views.spotter_view import ManageSpotter
 
 urlpatterns = [
-    path("api/client", ClientRegisterView.as_view()),
-    path("api/categorie", CategorieDetailleView.as_view()),
-    path("api/spotter", ClientRegisterView.as_view()),
-    path("api/spotter/solde", GetSoldeSpotter.as_view()),
+    path("api/client", ManageClient.as_view()),
     path("api/client/login", views.obtain_auth_token),
+    path("api/spotter", ManageSpotter.as_view()),
     path("api/spotter/login", views.obtain_auth_token),
-    path("api/client", GetClientDetailView.as_view()),
-    path("api/client/requests", GetClientRequeteView.as_view()),
-    path("api/requests", CreateRequeteView.as_view()),
-    path("api/requests/all", SpotterGetAllRequete.as_view()),
-    path("api/requests/<int:pk>", spotter_get_detaille_requete),
+    path("api/categorie", GetAllCategorie.as_view()),
+    path("api/requete", ManageRequete.as_view()),
+    path("api/requete/client", GetClientRequete.as_view()),
+    path("api/requete/<int:id_requete>", get_requete_detail),
 ]

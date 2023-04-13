@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import *
+from spotato_app.models import Spotter, Categorie, Requete, Client, Transaction
 
 admin.site.register(Spotter)
 admin.site.register(Categorie)

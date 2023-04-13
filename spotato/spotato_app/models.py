@@ -7,12 +7,12 @@ from django.utils import timezone
 
 class Client(models.Model):
     phone = models.CharField(max_length=10)
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class Spotter(models.Model):
     phone = models.CharField(max_length=10)
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class Categorie(models.Model):
@@ -21,11 +21,11 @@ class Categorie(models.Model):
 
 
 class Requete(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
     spotter = models.ForeignKey(Spotter, on_delete=models.CASCADE, null=True)
     label = models.CharField(max_length=100)
     description = models.TextField()
-    categorie = models.ForeignKey(Categorie, on_delete=models.DO_NOTHING)
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
     latitude = models.CharField(max_length=100)
     longitude = models.CharField(max_length=100)
     duration = models.FloatField()
@@ -41,4 +41,5 @@ class Transaction(models.Model):
     source = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='user_transaction_source')
     requete = models.ForeignKey(Requete, on_delete=models.DO_NOTHING, related_name="transaction_requete")
     date_time = models.DateTimeField(default=timezone.now())
+    fee = models.FloatField()
 

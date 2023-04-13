@@ -10,9 +10,21 @@
     "phone"       : "phone",
     "email"       : "email",
     "username"    : "username",
-    "password"    : "password",
+    "password"    : "password"
 }
 ```
+---
+- [x] `GET /api/client` : obtenir détails d'un utilisateur
+    - Need _User_ token
+---
+- [x] `POST /api/client/login` : client connexion , return user token
+```json
+{
+        "username": "username",
+        "password": "password"
+}
+```
+---
 - [x] `POST /api/spotter` : spotter inscription
 ```json
 {
@@ -21,33 +33,29 @@
     "phone"       : "phone",
     "email"       : "email",
     "username"    : "username",
-    "password"    : "password",
+    "password"    : "password"
 }
+```
+---
 
-```
-- [x] `POST /api/client/login` : client connexion 
-```json
-{
-        "username": "username",
-        "password": "password",
-}
-```
+- [x] `GET /api/spotter` : obtenir détails d'un utilisateur
+    - Need _Spotter_ token
+---
+
 - [x] `POST /api/spotter/login` : spotter connexion
 ```json
 {
         "username": "username",
-        "password": "password",
+        "password": "password"
 }
 ```
+---
 
-- [x] `GET /api/client/` : obtenir détails d'un utilisateur
+- [x] `GET /api/request/client` : obtenir toutes les requetes demandées par un utilisateur
     - Need _User_ token
+---
 
-- [x] `GET /api/client/requests` : obtenir toutes les requetes demandées par un utilisateur
-    - Need _User_ token
-
-
-- [x] `POST /api/requests` : faire une nouvelle requete 
+- [x] `POST /api/request` : faire une nouvelle requete
     - <b>Need _User_ token</b>
 ```json
 {
@@ -60,36 +68,15 @@
     "requested_start_time" : "requested_start_time",
     "montant" : "montant"
 }
-
 ```
-- [x] `GET /api/requests`: obtenir toutes les requetes
-    - Need _Spotter_ token
+---
 
-
-- [x] `GET /api/requests/{request_id}` : obtenir détails d'une requete
+- [x] `GET /api/request`: obtenir toutes les requetes
     - Need _Spotter_ token
+---
 
-- [x] `PATCH /api/requests/{request_id}` : modifier requete (annuler, commencer, finir)
-    - Need _Spotter_ token
-```json
-{
-    "status": "start"
-}
-```
-
-- [x] `PATCH /api/requests/{request_id}` : modifier requete (annuler, commencer, finir)
-    - Need _Spotter_ token
-```json
-{
-    "status": "start-chrono",
-    "start_time": ""
-}
-```
+- [x] `GET /api/request/{request_id}` : obtenir détails d'une requete
+    - Need _AnyUser_ token
+---
 
 - [x] `GET /api/categorie` : get all categorie
-
-- [x] `GET /api/transaction` : ask transaction
-
-- [ ] `POST /api/valide_transaction` : effectuer transaction
-
-
