@@ -1,13 +1,13 @@
 from django.contrib.auth.models import User
-from rest_framework import status
+from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from spotato_app.models import Spotter, Requete
-from spotato_app.views.client_view import ClientSerializer
+from spotato_app.views.client_view import UserClientRegisterSerializer
 
 
-class SpotterSerializer(ClientSerializer):
+class UserSpotterRegisterSerializer(UserClientRegisterSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             first_name=validated_data["first_name"],
@@ -19,6 +19,12 @@ class SpotterSerializer(ClientSerializer):
         return Spotter.objects.create(user=user, phone=validated_data["phone"])
 
 
+class SpotterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spotter
+        fields = "__all__"
+
+
 class ManageSpotter(APIView):
     def get(self, request):
         """Get Spotter Detaille With Solde"""
@@ -26,10 +32,7 @@ class ManageSpotter(APIView):
             user = User.objects.get(pk=request.user.id)
             spotter = Spotter.objects.filter(user=user)
             if spotter.exists():
-                list_requete = Requete.objects.filter(spotter=spotter)
-                solde = sum([requete.montant for requete in list_requete])
-                spotter_serializer = SpotterSerializer(spotter, many=False)
-                spotter_serializer.data["solde"] = solde  # add key solde in dict
+                spotter_serializer = SpotterSerializer(spotter)
                 return Response(spotter_serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(
@@ -38,7 +41,7 @@ class ManageSpotter(APIView):
         return Response("User is not connected", status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
-        spotter_serializer = SpotterSerializer(data=request.data)
+        spotter_serializer = UserSpotterRegisterSerializer(data=request.data)
         if spotter_serializer.is_valid():
             if Spotter.objects.filter(
                     username=spotter_serializer.validated_data["username"]

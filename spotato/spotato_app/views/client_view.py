@@ -6,7 +6,8 @@ from rest_framework.views import APIView
 from spotato_app.models import Client
 
 
-class ClientSerializer(serializers.Serializer):
+class UserClientRegisterSerializer(serializers.Serializer):
+    """Create Django user and spotato Client"""
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
     username = serializers.CharField(max_length=100)
@@ -20,29 +21,38 @@ class ClientSerializer(serializers.Serializer):
             last_name=validated_data["last_name"],
             email=validated_data["email"],
             username=validated_data["username"],
-            password=validated_data["paviewssword"],
+            password=validated_data["password"],
         )
 
         return Client.objects.create(user=user, phone=validated_data["phone"])
 
 
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = "__all__"
+
+
 class ManageClient(APIView):
     def get(self, request):
-        """Get user detaille
-        print user information
-        """
+        """Get user detaille print user information"""
         if request.user.is_authenticated:
             user = User.objects.get(pk=request.user.id)
             client = Client.objects.filter(user=user)
-            client_serializer = ClientSerializer(client, many=False)
-            return Response(client_serializer.data, status=status.HTTP_200_OK)
+            if client.exists():
+                client_serializer = ClientSerializer(client.first())
+                return Response(client_serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    "client is not connected", status=status.HTTP_400_BAD_REQUEST
+                )
         return Response("user not connected", status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """Create new User
         client register
         """
-        client_serializer = ClientSerializer(data=request.data)
+        client_serializer = UserClientRegisterSerializer(data=request.data)
         if client_serializer.is_valid():
             if User.objects.filter(
                     username=client_serializer.validated_data["username"]
@@ -52,11 +62,9 @@ class ManageClient(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             client_serializer.save()
-
             data = {
                 "username": client_serializer.validated_data["username"],
                 "phone": client_serializer.validated_data["phone"],
             }
             return Response(data, status=status.HTTP_201_CREATED)
-
         return Response(client_serializer.errors, status=status.HTTP_403_FORBIDDEN)
