@@ -86,12 +86,17 @@ class ManageRequete(APIView):
         """
         if request.user.is_authenticated:
             user = User.objects.get(pk=request.user.id)
+            clients = Client.objects.filter(user=user)
             if Spotter.objects.filter(user=user).exists():
                 list_requete = Requete.objects.filter(status=0)
                 list_requete_serializer = RequeteSerializer(list_requete, many=True)
                 return Response(list_requete_serializer.data, status=status.HTTP_200_OK)
+            elif clients.exists():
+                list_requete = Requete.objects.filter(status=0, client=clients.first())
+                list_requete_serializer = RequeteSerializer(list_requete, many=True)
+                return Response(list_requete_serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response("Spotter not found", status=status.HTTP_400_BAD_REQUEST)
+                return Response("Spotter not Client not found", status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(
                 "User is not authenticate", status=status.HTTP_400_BAD_REQUEST
