@@ -3,11 +3,17 @@ from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from spotato_app.models import Spotter, Requete
-from spotato_app.views.client_view import UserClientRegisterSerializer
+from spotato_app.models import Spotter
 
 
-class UserSpotterRegisterSerializer(UserClientRegisterSerializer):
+class UserSpotterRegisterSerializer(serializers.Serializer):
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    username = serializers.CharField(max_length=100)
+    email = serializers.EmailField()
+    password = serializers.CharField(max_length=100)
+    phone = serializers.CharField(max_length=10)
+
     def create(self, validated_data):
         user = User.objects.create_user(
             first_name=validated_data["first_name"],
