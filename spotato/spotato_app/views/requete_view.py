@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import serializers, status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -103,29 +103,25 @@ class ManageRequete(APIView):
             )
 
 
-@csrf_exempt
-def get_requete_detail(request, id_requete):
+@api_view(['GET'])
+def requete_detail(request, id_requete):
     if request.method == "GET":
         if request.user.is_authenticated:
-            requete = Requete.objects.filter(pk=id_requete, status=0)
-            requete_serializer = RequeteSerializer(requete, many=False)
-            return Response(requete_serializer.data, status=status.HTTP_200_OK)
+            user = User.objects.get(pk=request.user.id)
+            clients = Client.objects.filter(user=user)
+
+            if Spotter.objects.filter(user=user).exists():
+                requete = Requete.objects.filter(pk=id_requete, status=0)
+            elif clients.exists():
+                requete = Requete.objects.filter(pk=id_requete, client=clients.first())
+            else:
+                return Response("Spotter not Client not found", status=status.HTTP_400_BAD_REQUEST)
+
+            if requete.exists():
+                requete_serializer = RequeteSerializer(requete.first())
+                return Response(requete_serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(f"there is not requete with id {id_requete}", status=status.HTTP_404_NOT_FOUND)
+
         else:
             return Response("User is not authenticate", status=status.HTTP_400_BAD_REQUEST)
-
-
-class GetClientRequete(APIView):
-    def get(self, request):
-        if request.user.is_authenticated:
-            user = User.objects.get(pk=request.user.id)
-            client = Client.objects.filter(user=user)
-            if client.exists():
-                list_requete = Requete.objects.filter(client=client.first())
-                list_requete_serializer = RequeteSerializer(list_requete, many=True)
-                return Response(list_requete_serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response("Client not found", status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(
-                "User is not authenticate", status=status.HTTP_400_BAD_REQUEST
-            )

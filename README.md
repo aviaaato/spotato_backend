@@ -72,7 +72,7 @@
 ---
 
 - [x] `GET /api/request`: obtenir toutes les requetes
-    - Need _Spotter_ token
+    - Need _Spotter_ token or _Client_ token
 ---
 
 - [x] `GET /api/request/{request_id}` : obtenir détails d'une requete
