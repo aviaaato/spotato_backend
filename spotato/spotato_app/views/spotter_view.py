@@ -4,16 +4,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from spotato_app.models import Spotter
+from spotato_app.views.client_view import UserClientRegisterSerializer
 
 
-class UserSpotterRegisterSerializer(serializers.Serializer):
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
-    username = serializers.CharField(max_length=100)
-    email = serializers.EmailField()
-    password = serializers.CharField(max_length=100)
-    phone = serializers.CharField(max_length=10)
-
+class UserSpotterRegisterSerializer(UserClientRegisterSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             first_name=validated_data["first_name"],
@@ -49,7 +43,7 @@ class ManageSpotter(APIView):
     def post(self, request):
         spotter_serializer = UserSpotterRegisterSerializer(data=request.data)
         if spotter_serializer.is_valid():
-            if Spotter.objects.filter(
+            if User.objects.filter(
                     username=spotter_serializer.validated_data["username"]
             ).exists():
                 return Response(
